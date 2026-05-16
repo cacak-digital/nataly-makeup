@@ -1,0 +1,722 @@
+﻿<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Natalija Makeup Artist – Čačak</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --rg:    #B76E79;
+      --rg-lt: #d4a0a8;
+      --blush: #f7e8ec;
+      --white: #ffffff;
+      --off:   #faf8f8;
+      --ink:   #1a1212;
+      --muted: #7a6060;
+      --bdr:   rgba(183,110,121,0.18);
+      --ease:  cubic-bezier(.4,0,.2,1);
+      --ser:   'Cormorant Garamond', Georgia, serif;
+      --san:   'Jost', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--san); background: var(--white); color: var(--ink); overflow-x: hidden; }
+    img  { display: block; width: 100%; height: 100%; object-fit: cover; }
+    a    { text-decoration: none; color: inherit; }
+    ul   { list-style: none; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--blush); }
+    ::-webkit-scrollbar-thumb { background: var(--rg); }
+
+    /* ── HEADER ── */
+    #header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s var(--ease);
+    }
+    #header.scrolled { border-color: var(--bdr); }
+    .header-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 1.3rem 2rem 0;
+    }
+    .logo-block {
+      display: flex; flex-direction: column; align-items: center; gap: 0.1rem;
+      margin-bottom: 1rem;
+    }
+    .logo-mark { font-size: .85rem; color: var(--rg); letter-spacing: 2px; }
+    .logo-name {
+      font-family: var(--ser); font-size: 1.5rem; font-weight: 600;
+      letter-spacing: 6px; text-transform: uppercase; color: var(--ink);
+      text-align: center; line-height: 1.15;
+    }
+    .logo-sub {
+      font-size: 0.55rem; font-weight: 300; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .nav-bar {
+      width: 100%; border-top: 1px solid var(--bdr);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0.6rem 0; gap: 2.8rem;
+    }
+    .nav-bar a {
+      font-size: 0.6rem; font-weight: 400; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--muted);
+      padding: 0.2rem 0; position: relative;
+      transition: color .25s;
+    }
+    .nav-bar a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px; background: var(--rg);
+      transition: width .3s var(--ease);
+    }
+    .nav-bar a:hover { color: var(--rg); }
+    .nav-bar a:hover::after { width: 100%; }
+    .nav-toggle {
+      display: none; position: fixed; right: 1.2rem; top: 1.1rem; z-index: 201;
+      flex-direction: column; gap: 5px; cursor: pointer; padding: 4px;
+      background: none; border: none;
+    }
+    .nav-toggle span {
+      display: block; width: 22px; height: 1.5px;
+      background: var(--ink); border-radius: 2px; transition: .3s var(--ease);
+    }
+    .header-spacer { height: 128px; }
+
+    /* ── HERO — full-bleed ── */
+    #hero {
+      position: relative; width: 100%;
+      height: calc(100vh - 128px); min-height: 480px;
+      overflow: hidden; background: #f0e4e7;
+    }
+    .hero-photo {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg,#e8d0d5,#f5dde3 40%,#fce8ed 70%,#f0d8dc);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-photo img {
+      width: 100%; height: 100%; object-fit: cover;
+      /* Vraćeno na tvoju originalnu vrednost za desktop prikaz */
+      object-position: center 20%;
+      filter: brightness(.92) saturate(1.05);
+      transform: scale(1.03);
+      transition: transform .8s ease;
+    }
+    .hero-photo:hover img { transform: scale(1.06); }
+
+    /* Specijalno pravilo koje se aktivira SAMO na telefonima */
+    @media (max-width: 640px) {
+      .hero-photo img {
+        /* Gura sliku ulevo da devojka bude na sredini ekrana telefona */
+        object-position: 18% 20%;
+        transform: scale(1); /* Smanjen zoom na telefonu da glava ne bude isečena */
+      }
+    
+    }
+    .hero-placeholder svg { width: 56px; height: 56px; }
+    .hero-placeholder p {
+      font-size: .65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--rg);
+    }
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; }
+    .gallery-card {
+      position: relative; overflow: hidden; border-radius: 28px;
+      min-height: 280px; box-shadow: 0 22px 60px rgba(16,10,10,.08);
+    }
+    .gallery-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .6s var(--ease);
+    }
+    .gallery-card:hover img { transform: scale(1.08); }
+    .gallery-caption {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 1rem 1rem 1.2rem;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.55) 100%);
+      color: #fff; font-family: var(--ser); font-size: .95rem;
+      letter-spacing: .5px;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 25%, rgba(16,8,8,.22) 65%, rgba(16,8,8,.55) 100%);
+    }
+    .hero-text {
+      position: absolute; bottom: 4.5rem; left: 5%;
+      color: #fff; animation: fadeUp .9s var(--ease) .15s both;
+    }
+    .hero-eyebrow {
+      font-size: .58rem; letter-spacing: 4px; text-transform: uppercase;
+      font-weight: 300; margin-bottom: .6rem; opacity: .75;
+    }
+    .hero-title {
+      font-family: var(--ser);
+      font-size: clamp(3rem,7vw,6.2rem);
+      font-weight: 300; line-height: 1.05; letter-spacing: -1px;
+    }
+    .hero-tagline {
+      margin-top: .45rem; font-size: .72rem; font-weight: 200;
+      letter-spacing: 3px; opacity: .7;
+    }
+    .hero-cta-row {
+      margin-top: 1.6rem; display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp .9s var(--ease) .4s both;
+    }
+    .hero-btn {
+      display: inline-block; padding: .7rem 2rem;
+      font-size: .58rem; font-weight: 500; letter-spacing: 3px; text-transform: uppercase;
+      transition: background .25s, color .25s, box-shadow .25s, transform .2s;
+      cursor: pointer;
+    }
+    .hero-btn-primary {
+      background: var(--rg); color: #fff; border: 1px solid var(--rg);
+    }
+    .hero-btn-primary:hover {
+      background: #9d5a64; box-shadow: 0 8px 22px rgba(183,110,121,.35);
+      transform: translateY(-2px);
+    }
+    .hero-btn-ghost {
+      background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.5);
+    }
+    .hero-btn-ghost:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+
+    .hero-socials {
+      position: absolute; top: 50%; right: 1.6rem;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: .8rem;
+      animation: fadeIn 1s var(--ease) .6s both;
+    }
+    .hero-socials a {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.35);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.65);
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .hero-socials a:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,.1); }
+    .hero-socials svg { width: 13px; height: 13px; }
+
+    /* ── SHARED ── */
+    .section { padding: 6rem 0; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .label  {
+      font-size: .58rem; font-weight: 400; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--rg); margin-bottom: .7rem;
+    }
+    .heading {
+      font-family: var(--ser); font-size: clamp(2rem,4vw,3.4rem);
+      font-weight: 300; color: var(--ink); line-height: 1.2;
+    }
+    .heading em { font-style: italic; color: var(--rg); }
+    .rule { width: 34px; height: 1px; background: var(--rg); margin: 1.3rem 0; }
+    .txt  { font-size: .84rem; line-height: 2; color: var(--muted); font-weight: 300; }
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ── ABOUT ── */
+    #about .wrap {
+      display: grid; grid-template-columns: 1fr 1.15fr;
+      gap: 5rem; align-items: center;
+    }
+    .about-img {
+      position: relative; aspect-ratio: 3/4; overflow: hidden; background: var(--blush);
+    }
+    .about-img::after {
+      content: ''; position: absolute; bottom: -14px; right: -14px;
+      width: 65%; height: 65%; border: 1px solid var(--rg-lt); z-index: -1;
+    }
+    .img-ph {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: .7rem; font-family: var(--ser); font-size: 1rem;
+      color: var(--rg); opacity: .45;
+    }
+    .stats { display: flex; gap: 3rem; margin-top: 2.6rem; }
+    .stat-n {
+      font-family: var(--ser); font-size: 2.8rem; font-weight: 300;
+      color: var(--rg); line-height: 1;
+    }
+    .stat-l {
+      font-size: .58rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-top: .25rem;
+    }
+
+    /* ── PORTFOLIO slider ── */
+    #portfolio { background: var(--off); }
+    .port-head { text-align: center; margin-bottom: 3rem; }
+    .port-head .rule { margin: 1.3rem auto; }
+    .slider-wrap { position: relative; overflow: hidden; }
+    .slider-track { display: flex; transition: transform .55s var(--ease); }
+    .slide {
+      min-width: 33.333%; aspect-ratio: 3/4; flex-shrink: 0;
+      position: relative; overflow: hidden; cursor: pointer;
+    }
+    .slide-inner {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg,#f0d8dc,#fce8ec);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: .5rem;
+      transition: transform .55s var(--ease);
+    }
+    .slide-inner span { font-family: var(--ser); font-size: .95rem; color: var(--rg); opacity: .45; }
+    .slide:hover .slide-inner { transform: scale(1.05); }
+    .slide-ov {
+      position: absolute; inset: 0;
+      background: rgba(183,110,121,.3);
+      display: flex; align-items: flex-end; padding: 1.4rem;
+      opacity: 0; transition: opacity .35s var(--ease);
+    }
+    .slide-ov span {
+      font-family: var(--ser); font-size: 1.1rem; font-style: italic; color: #fff;
+    }
+    .slide:hover .slide-ov { opacity: 1; }
+    .slider-ctrl {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1.2rem; margin-top: 1.8rem;
+    }
+    .s-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid var(--bdr); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--ink);
+      transition: border-color .2s, background .2s;
+    }
+    .s-btn:hover { border-color: var(--rg); background: var(--blush); }
+    .s-btn svg { width: 15px; height: 15px; }
+    .dots { display: flex; gap: 6px; }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--rg-lt); cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .dot.on { background: var(--rg); transform: scale(1.3); }
+
+    /* ── SERVICES ── */
+    .svc-head { text-align: center; margin-bottom: 3.5rem; }
+    .svc-head .rule { margin: 1.3rem auto; }
+    .svc-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      border: 1px solid var(--bdr);
+    }
+    .svc {
+      padding: 2.6rem 2rem; position: relative; overflow: hidden;
+      border-right: 1px solid var(--bdr); border-bottom: 1px solid var(--bdr);
+      transition: background .25s var(--ease);
+    }
+    .svc:nth-child(3n) { border-right: none; }
+    .svc:hover { background: var(--blush); }
+    .svc-n {
+      font-family: var(--ser); font-size: 3.5rem; font-weight: 300;
+      color: rgba(183,110,121,.1); line-height: 1;
+      position: absolute; top: 1rem; right: 1.4rem;
+      pointer-events: none;
+    }
+    .svc-ico { font-size: 1.3rem; margin-bottom: .9rem; }
+    .svc-name {
+      font-family: var(--ser); font-size: 1.25rem; font-weight: 400;
+      color: var(--ink); margin-bottom: .5rem;
+    }
+    .svc-desc { font-size: .78rem; line-height: 1.85; color: var(--muted); font-weight: 300; }
+    .svc-price {
+      display: inline-block; margin-top: 1.1rem;
+      font-size: .58rem; font-weight: 500; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--rg);
+    }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { background: var(--ink); }
+    #testimonials .wrap {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem;
+    }
+    #testimonials .label { color: var(--rg-lt); }
+    #testimonials .heading { color: #fff; }
+    #testimonials .rule { background: var(--rg); }
+    .testi-head { grid-column: 1/-1; margin-bottom: 1.5rem; }
+    .q-mark {
+      font-family: var(--ser); font-size: 4.5rem; font-weight: 300;
+      color: var(--rg); line-height: .6; margin-bottom: 1rem;
+    }
+    .q-text {
+      font-family: var(--ser); font-size: 1rem; font-style: italic;
+      font-weight: 300; line-height: 1.85; color: rgba(255,255,255,.7);
+      margin-bottom: 1.3rem;
+    }
+    .q-name {
+      font-size: .58rem; font-weight: 500; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--rg-lt);
+    }
+    .q-svc { font-size: .52rem; color: rgba(255,255,255,.28); letter-spacing: 2px; text-transform: uppercase; margin-top: .2rem; }
+
+    /* ── CONTACT ── */
+    #contact .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
+    .cd { margin-bottom: 1.7rem; }
+    .cd-l {
+      font-size: .55rem; font-weight: 500; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--rg); margin-bottom: .3rem;
+    }
+    .cd-v {
+      font-family: var(--ser); font-size: 1.05rem; font-weight: 300; color: var(--ink);
+    }
+    .cd-v a { color: var(--ink); transition: color .2s; }
+    .cd-v a:hover { color: var(--rg); }
+    .form { display: flex; flex-direction: column; gap: 1.1rem; }
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .fg { display: flex; flex-direction: column; gap: .35rem; }
+    .fg label {
+      font-size: .55rem; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .fg input, .fg select, .fg textarea {
+      font-family: var(--san); font-size: .84rem; font-weight: 300; color: var(--ink);
+      padding: .7rem 0; background: transparent;
+      border: none; border-bottom: 1px solid var(--bdr); outline: none;
+      width: 100%; transition: border-color .25s;
+    }
+    .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--rg); }
+    .fg textarea { resize: none; min-height: 80px; }
+    .btn-sub {
+      align-self: flex-start; padding: .82rem 2.4rem;
+      background: var(--ink); color: #fff; border: none; cursor: pointer;
+      font-family: var(--san); font-size: .58rem; font-weight: 500;
+      letter-spacing: 3px; text-transform: uppercase;
+      transition: background .25s, transform .2s, box-shadow .25s;
+    }
+    .btn-sub:hover {
+      background: var(--rg); transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(183,110,121,.28);
+    }
+
+    /* ── INSTAGRAM STRIP ── */
+    .insta {
+      background: var(--blush); padding: 3.2rem 2rem; text-align: center;
+      border-top: 1px solid var(--bdr);
+    }
+    .insta .label { margin-bottom: .4rem; }
+    .insta-hdl {
+      font-family: var(--ser); font-size: 2.1rem; font-weight: 300;
+      color: var(--ink); margin-bottom: 1.3rem;
+    }
+    .insta-lnk {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .58rem; font-weight: 500; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--rg);
+      border-bottom: 1px solid var(--rg-lt); padding-bottom: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .insta-lnk:hover { color: var(--ink); border-color: var(--ink); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,.28);
+      text-align: center; padding: 1.4rem 2rem;
+      font-size: .58rem; letter-spacing: 2px; text-transform: uppercase;
+    }
+    footer span { color: var(--rg-lt); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+    @keyframes fadeIn { from { opacity:0; } to   { opacity:1; } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .slide { min-width: 50%; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      #about .wrap { grid-template-columns: 1fr; gap: 2.8rem; }
+      .about-img::after { display: none; }
+      .svc-grid { grid-template-columns: 1fr 1fr; }
+      .svc:nth-child(3n) { border-right: 1px solid var(--bdr); }
+      .svc:nth-child(2n) { border-right: none; }
+      #testimonials .wrap { grid-template-columns: 1fr; gap: 2rem; }
+      #contact .wrap { grid-template-columns: 1fr; gap: 3rem; }
+      .frow { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .header-inner { flex-direction: row; justify-content: center; padding: .9rem 1.2rem 0; }
+      .logo-block { flex-direction: row; align-items: center; gap: .5rem; margin-bottom: 0; }
+      .logo-mark { display: none; }
+      .logo-name { font-size: 1.1rem; }
+      .nav-bar {
+        display: none; flex-direction: column; position: fixed;
+        top: 0; right: -100%; width: 65vw; height: 100vh;
+        background: rgba(255,255,255,.97); backdrop-filter: blur(12px);
+        padding: 5rem 2rem 2rem; gap: 1.6rem; justify-content: flex-start;
+        border-left: 1px solid var(--bdr); transition: right .35s var(--ease);
+      }
+      .nav-bar.open { display: flex; right: 0; }
+      .nav-toggle { display: flex; }
+      .header-spacer { height: 68px; }
+      .slide { min-width: 85%; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .svc:nth-child(n) { border-right: none; }
+      .hero-socials { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="header-inner">
+      <a href="#hero" class="logo-block">
+        <div class="logo-mark">✦</div>
+        <div>
+          <div class="logo-name">Natalija Makeup</div>
+          <div class="logo-sub">Makeup Artist · Čačak</div>
+        </div>
+      </a>
+      <nav class="nav-bar" id="navBar">
+        <a href="#about">O meni</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#services">Usluge</a>
+        <a href="#testimonials">Utisci</a>
+        <a href="#contact">Kontakt</a>
+      </nav>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+  <div class="header-spacer"></div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-photo">
+      <img src="hero%20photo.png" alt="Natalija Makeup Studio" />
+    </div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-text">
+      <p class="hero-eyebrow">Makeup Artist · Čačak, Srbija</p>
+      <h1 class="hero-title">Natalija<br>Makeup</h1>
+      <p class="hero-tagline">a passionate creator of beauty</p>
+      <div class="hero-cta-row">
+        <a href="#contact" class="hero-btn hero-btn-primary">Zakaži termin</a>
+        <a href="#portfolio" class="hero-btn hero-btn-ghost">Portfolio</a>
+      </div>
+    </div>
+
+    <div class="hero-socials">
+      <a href="https://instagram.com/natalijaa.makeup" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="wrap">
+      <div class="about-img reveal">
+        <img src="owner.jpg" alt="Owner of Natalie Makeup Studio" />
+      </div>
+      <div>
+        <p class="label reveal">O meni</p>
+        <h2 class="heading reveal">Lepota je<br><em>umetnost</em></h2>
+        <div class="rule reveal"></div>
+        <p class="txt reveal">Zdravo! Ja sam Natalija, profesionalni makeup artist iz Čačka. Svoju strast prema šminki pretvaram u prelepa umetnička dela direktno na Vašem licu — od nežne svakodnevne šminke do spektakularnog glamura.</p>
+        <p class="txt reveal" style="margin-top:.9rem;">Sa višegodišnjim iskustvom i stalnim usavršavanjem, koristim isključivo premium proizvode koji neguju i ulepšavaju Vaš ten. Svaka klijentinja zaslužuje da se oseća savršeno.</p>
+        <div class="stats reveal">
+          <div><div class="stat-n">5+</div><div class="stat-l">Godina iskustva</div></div>
+          <div><div class="stat-n">300+</div><div class="stat-l">Srećnih klijentica</div></div>
+          <div><div class="stat-n">100%</div><div class="stat-l">Zadovoljstvo</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section id="gallery" class="section">
+    <div class="wrap">
+      <div class="port-head reveal">
+        <p class="label">Gallery</p>
+        <h2 class="heading">Makeup <em>Portfolio</em></h2>
+        <div class="rule"></div>
+      </div>
+      <div class="gallery-grid reveal">
+        <a class="gallery-card" href="makeup-portfolio/slika1.jpg" target="_blank">
+          <img src="makeup-portfolio/slika1.jpg" alt="Bridal makeup" />
+          <div class="gallery-caption">Bridal makeup</div>
+        </a>
+        <a class="gallery-card" href="makeup-portfolio/slika2.jpg" target="_blank">
+          <img src="makeup-portfolio/slika2.jpg" alt="Smoky eye" />
+          <div class="gallery-caption">Smoky eye</div>
+        </a>
+        <a class="gallery-card" href="makeup-portfolio/slika3.jpg" target="_blank">
+          <img src="makeup-portfolio/slika3.jpg" alt="Glam look" />
+          <div class="gallery-caption">Glam look</div>
+        </a>
+        <a class="gallery-card" href="makeup-portfolio/slika4.jpg" target="_blank">
+          <img src="makeup-portfolio/slika4.jpg" alt="Editorial makeup" />
+          <div class="gallery-caption">Editorial makeup</div>
+        </a>
+        <a class="gallery-card" href="makeup-portfolio/slika5.jpg" target="_blank">
+          <img src="makeup-portfolio/slika5.jpg" alt="Prom makeup" />
+          <div class="gallery-caption">Prom makeup</div>
+        </a>
+        <a class="gallery-card" href="makeup-portfolio/slika6.jpg" target="_blank">
+          <img src="makeup-portfolio/slika6.jpg" alt="Everyday makeup" />
+          <div class="gallery-caption">Everyday makeup</div>
+        </a>
+        <a class="gallery-card" href="makeup-portfolio/slika7.jpg" target="_blank">
+          <img src="makeup-portfolio/slika7.jpg" alt="Evening glam" />
+          <div class="gallery-caption">Evening glam</div>
+        </a>
+        <a class="gallery-card" href="makeup-portfolio/slika8.jpg" target="_blank">
+          <img src="makeup-portfolio/slika8.jpg" alt="Natural beauty" />
+          <div class="gallery-caption">Natural beauty</div>
+
+          <a class="gallery-card" href="makeup-portfolio/slika9.jpg" target="_blank">
+          <img src="makeup-portfolio/slika9.jpg" alt="Natural beauty" />
+          <div class="gallery-caption">Natural beauty</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="section">
+    <div class="wrap">
+      <div class="svc-head reveal">
+        <p class="label">Usluge</p>
+        <h2 class="heading">Šta <em>nudim</em></h2>
+        <div class="rule"></div>
+      </div>
+      <div class="svc-grid">
+        <div class="svc reveal"><div class="svc-n">01</div><div class="svc-ico">🌸</div><div class="svc-name">Dnevna šminka</div><p class="svc-desc">Prirodan i svež izgled koji naglašava Vašu prirodnu lepotu za svakodnevne prilike.</p><span class="svc-price">od 2.500 RSD</span></div>
+        <div class="svc reveal"><div class="svc-n">02</div><div class="svc-ico">✨</div><div class="svc-name">Večernja šminka</div><p class="svc-desc">Glamurozni smoky eye i elegantni detalji koji će Vas izdvojiti na svakom događaju.</p><span class="svc-price">od 3.500 RSD</span></div>
+        <div class="svc reveal"><div class="svc-n">03</div><div class="svc-ico">💍</div><div class="svc-name">Šminka za venčanje</div><p class="svc-desc">Vaš najvažniji dan zaslužuje savršenu šminku. Dugotrajna formula koja traje ceo dan.</p><span class="svc-price">od 6.000 RSD</span></div>
+        <div class="svc reveal"><div class="svc-n">04</div><div class="svc-ico">📸</div><div class="svc-name">Šminka za fotografisanje</div><p class="svc-desc">Posebno prilagođena kameri — savršen look koji izgleda fenomenalno na fotografiji.</p><span class="svc-price">od 4.000 RSD</span></div>
+        <div class="svc reveal"><div class="svc-n">05</div><div class="svc-ico">🌺</div><div class="svc-name">Šminka za maturu</div><p class="svc-desc">Nezaboravan look za Vaš veliki dan — savršen za fotografije koje ostaju zauvek.</p><span class="svc-price">od 3.000 RSD</span></div>
+        <div class="svc reveal"><div class="svc-n">06</div><div class="svc-ico">🎨</div><div class="svc-name">Makeup lekcije</div><p class="svc-desc">Naučite tehnikama profesionalnog šminkanja. Privatni čas prilagođen Vašem stilu.</p><span class="svc-price">od 4.500 RSD</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="section">
+    <div class="wrap">
+      <div class="testi-head reveal">
+        <p class="label">Utisci</p>
+        <h2 class="heading">Šta kažu<br><em>klijentinje</em></h2>
+        <div class="rule"></div>
+      </div>
+      <div class="reveal"><div class="q-mark">"</div><p class="q-text">Natalija je nadmašila sva moja očekivanja! Šminka za venčanje trajala je ceo dan i bila apsolutno savršena. Svi su me pitali ko me je šminkao!</p><div class="q-name">Ana Milovanović</div><div class="q-svc">Venčana šminka</div></div>
+      <div class="reveal"><div class="q-mark">"</div><p class="q-text">Koristim njene usluge već dve godine. Uvek profesionalna, tačna i kreativna. Apsolutno preporučujem svima koji žele nešto posebno.</p><div class="q-name">Sanja Jovanovic</div><div class="q-svc">Stalna klijentinja</div></div>
+      <div class="reveal"><div class="q-mark">"</div><p class="q-text">Za maturski sam znala da hoću samo Nataliju. Bila sam prelepa i osećala se kao na snu. Fotografije su fenomenalne!</p><div class="q-name">Milica Đorđević</div><div class="q-svc">Matura Look</div></div>
+    </div>
+  </section>
+
+ 
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM -->
+  <div class="insta">
+    <p class="label">Pratite moj rad</p>
+    <p class="insta-hdl">@natalijaa.makeup</p><a href="https://instagram.com/natalijaa.makeup" target="_blank" rel="noopener" class="insta-lnk"></a>
+    <a href="https://instagram.com/natalijaa.makeup" target="_blank" rel="noopener" class="insta-lnk">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      Pratite na Instagramu
+    </a>
+  </div>
+
+  <footer>© 2026 <span>Natalija Makeup Artist</span> · Čačak · Sva prava zadržana</footer>
+
+  <script>
+    /* sticky */
+    const hdr = document.getElementById('header');
+    addEventListener('scroll', () => hdr.classList.toggle('scrolled', scrollY > 40));
+
+    /* mobile nav */
+    document.getElementById('navToggle').addEventListener('click', () =>
+      document.getElementById('navBar').classList.toggle('open')
+    );
+    document.querySelectorAll('#navBar a').forEach(a =>
+      a.addEventListener('click', () => document.getElementById('navBar').classList.remove('open'))
+    );
+
+    /* reveal */
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const sibs = [...e.target.parentElement.querySelectorAll('.reveal')];
+        e.target.style.transitionDelay = (sibs.indexOf(e.target) * 0.08) + 's';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* slider */
+    (function(){
+      const track = document.getElementById('sTrack');
+      const slides = track.querySelectorAll('.slide');
+      const dotsEl = document.getElementById('sDots');
+      let cur = 0;
+      const vis = () => window.innerWidth <= 640 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+      const maxSlide = () => slides.length - vis();
+
+      function buildDots(){
+        dotsEl.innerHTML = '';
+        const n = Math.ceil(slides.length / vis());
+        for(let i=0;i<n;i++){
+          const d = document.createElement('div');
+          d.className = 'dot' + (i === Math.floor(cur/vis()) ? ' on' : '');
+          d.onclick = () => goTo(i * vis());
+          dotsEl.appendChild(d);
+        }
+      }
+      function goTo(n){
+        cur = Math.max(0, Math.min(n, maxSlide()));
+        track.style.transform = `translateX(-${(cur/slides.length)*100}%)`;
+        document.querySelectorAll('.dot').forEach((d,i) =>
+          d.classList.toggle('on', i === Math.floor(cur/vis()))
+        );
+      }
+      document.getElementById('sNext').onclick = () => goTo(cur + vis());
+      document.getElementById('sPrev').onclick = () => goTo(cur - vis());
+      let sx = 0;
+      track.addEventListener('touchstart', e => sx = e.touches[0].clientX, {passive:true});
+      track.addEventListener('touchend', e => {
+        const dx = sx - e.changedTouches[0].clientX;
+        if(Math.abs(dx)>40) dx>0 ? goTo(cur+1) : goTo(cur-1);
+      });
+      buildDots();
+      addEventListener('resize', () => { buildDots(); goTo(0); });
+    })();
+
+    /* form */
+    function handleSubmit(btn){
+      btn.textContent = '✓ Upit poslat!';
+      btn.style.background = '#888';
+      setTimeout(() => { btn.textContent = 'Pošalji upit'; btn.style.background = ''; }, 3000);
+    }
+  </script>
+</body>
+</html>
